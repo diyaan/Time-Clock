@@ -1,147 +1,102 @@
-//https://diyaan.github.io/BrickGame/
-var Engine = Matter.Engine;
-var World = Matter.World;
-var Bodies = Matter.Bodies;
-var Body = Matter.Body;
-var Render = Matter.Render;
-var engine; 
-var world;
-var ball;
-var paddle;
-var rows=5;
-var columns=8;
-var brickBodies=[];
-var paddleWidth=100;
-var paddleHeight=20;
-var boundryleft
-var boundryright
-var canvasWidth=400;
-var canvasHeight=400;
-var boundrytop
-
-//to color : fill( red , green , blue )
-
-var brick;
 function setup() {
-	createCanvas(canvasWidth, canvasHeight);
-
-	engine = Engine.create();
-	world = engine.world;
-	ball = Bodies.circle(150 , 250 , 5 , {restitution:1.50, label:'ball'});
-	paddle = Bodies.rectangle(150 , 350 , paddleWidth , paddleHeight , {isStatic:true,label:'paddle'} );
-	World.add(world , ball);
-	World.add(world , paddle);
-	
-	boundryleft = Bodies.rectangle( 10 , 200 , 20 , 400 , {isStatic:true} );
-	boundryright = Bodies.rectangle( 390 , 200 , 20 , 400 , {isStatic:true} );
-	boundrytop = Bodies.rectangle( 200 , 10 , 400 , 20 , {isStatic:true} );
-	World.add(world , boundryleft );
-	World.add(world , boundryright);
-	World.add(world , boundrytop);
-
-	//Add all your bricks
 
 
-	/*for(i=0;i<columns;i=i+1)
-	{
-		brickBodies[i]=[];
-		for (j=0 ;j<rows;j=j+1)
+	createCanvas(400 , 400);
+	angleMode(DEGREES);
 
-		{
-			brick=Bodies.rectangle(27+(52*i) , 12 + (22*j) , 50 , 20 , {isStatic:true,'i':i, 'j':j, label:'brick'});
-			brickBodies[i][j]=brick;
-			World.add(world , brick);
-			 
-			
-		}
 
-	}*/
-	//console.log(brickBodies);
-	//Matter.Events.on(engine,'collisionStart',);
-	//Engine.run(engine);
-	var render = Render.create({
-	  element: document.body,
-	  engine: engine,
-	  options: {
-	    width: 400,
-	    height: 400,
-	    wireframes: false
-	  }
-	});
 
-	Engine.run(engine);
-	Render.run(render);
 }
 
-var x=150;
-var y=150;
 
-var rowColors = [ 'red' , 'green' , 'yellow' , 'blue' , 'magenta' , 'pink' , 'brown' , 'black']
+
+
+
 function draw() {
-	Engine.update(engine);
-	rectMode(CENTER);
-	ellipseMode(CENTER)
-	background(220);
-	//var i,j 
-	//console.log()
+
+	background(0);
+
+	strokeWeight(4);
+	stroke(255);
+	noFill();
+	ellipse(200 , 200 , 300 , 300 );
+
+	fill(150 , 100 , 100);
+	textSize(21);
+	text('6' , 190 , 340);
+
+	fill(150 , 100 , 100);
+	textSize(21);
+	text('12' , 190 , 75);
+
+	fill(150 , 100 , 100);
+	textSize(21);
+	text('3' , 325 , 200);
+
+	fill(150 , 100 , 100);
+	textSize(21);
+	text('9' , 60 , 200);
+
+	var d = day();
+	var m = month();
+	var yr = year();
+
+	fill(255 , 255 , 150);
+	noStroke();
+	textSize(30);
+	text(d +'/'+m+'/'+yr , 10 , 390);
+
+
+	translate(200 , 200);
+	rotate(-90);
+
+	var hr = hour();
+	var min = minute();
+	var sec = second();
 	
-	//console.log(a)
+	//fill(255);
+	//noStroke();
+	//text(hr + ':' + min +':' + sec , 10 , 200);
 
-	fill( 255 )
-	rect(paddle.position.x , paddle.position.y  , 100 , 20);
-	if (keyIsDown(LEFT_ARROW) && paddle.position.x>paddleWidth/2)
-	{
-		Body.setPosition(paddle,{x:paddle.position.x-5 , y:paddle.position.y})
-	}
+	strokeWeight(8);
+	stroke(255 , 100 , 150);
+	noFill();
+	let end1 = map(sec , 0 , 60 , 0 , 360);
+	//arc(0 , 0 , 300 , 300 , 0 , end1);
 
-	if (keyIsDown(RIGHT_ARROW) && paddle.position.x<width-paddleWidth/2)
-	{
-		Body.setPosition(paddle,{x:paddle.position.x+5 , y:paddle.position.y})
-	}
+
+
+	stroke(150 , 100 , 255);
+	let end2 = map(min , 0 , 60 , 0 , 360);
+	//arc(0 , 0 , 280 , 280 , 0 , end2);
+
+
+	stroke(150 , 255 , 100);
+	let end3 = map(hr % 12 , 0 , 12 , 0 , 360);
+	//arc(0 , 0 , 260 , 260 , 0 , end3);
 	
 
-    fill( 255 )
-	circle(ball.position.x , ball.position.y , 10);
+	push();
+	rotate(end1);
+	stroke(255 , 100 , 150);
+	line(0 , 0 , 100 , 0);
+	pop();
+
+	push();
+	rotate(end2);
+	stroke(150 , 100 , 255);
+	line(0 , 0 , 100 , 0);
+	pop();
+
+	push();
+	rotate(end3);
+	stroke(150 , 255 , 100);
+	line(0 , 0 , 100 , 0);
+	pop();
+
+
+	stroke(0);
+	point(0 , 0);
+
 
 }
-
-
-/* function event()
- {
-		pairs=event.pairs[0];
-		if(pairs.bodyA.label=='brick')
-		{
-			 pairs.bodyA.i;
-			 pairs.bodyA.j;
-			 World.remove(world , brickBodies[i][j])
-			 brickBodies[i][j]=null
-		}
-
-		if(pairs.bodyB.label=='brick')
-		{
-			 pairs.bodyB.i;
-			 pairs.bodyB.j;
-			 World.remove(world , brickBodies[i][j])
-			 brickBodies[i][j]=null
-		}
-	}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
